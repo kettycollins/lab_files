@@ -1,0 +1,18 @@
+name: Secure CI
+
+on: [push]
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+
+      - name: Scan secrets
+        uses: zricethezav/gitleaks-action@v2
+
+      - name: Generate SBOM
+        run: syft . -o json > sbom.json
